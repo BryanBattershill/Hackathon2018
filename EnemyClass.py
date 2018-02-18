@@ -1,96 +1,92 @@
+import random
+import math
+
 class EnemyClass:
-    speed = null
-    speedDirection = null # -1 is negative, 1 is positive
-    health = null
-    trajectory = null
-    angleOfTrajectory = null# range PI/4 and PI/2
-    position = null
-    radius = null
+    
+    speed = 0
+    speedDirection = 0 # -1 is negative, 1 is positive
+    trajectory = [0,0]
+    angleOfTrajectory = 0 # range PI/4 and PI/2
+    position = [0,0]
+    radius = 0
 
     # boolean for spawn location
-    topOrBottom = null
-    rightOrLeft = null
+    topOrBottom = False
+    rightOrLeft = False
 
     
-    def __init__(self, health, speed, radius):
-        self.speed = speed 
-        self.health = health
-        self.radius = radius
+    def __init__(self, speed, radius):
         
-        trajectory = [0,0]
-        position = [0,0]
-
-        topOrBottom = False
-        rightOrLeft = False 
-     
+        self.speed = speed 
+        self.radius = radius
 
         # 0 is right side, 1 is top side, 2 is left side, 3 is bottom side    
-        randomSide = Math.rand(0,3)
+        randomSide = random.randint(0,3)
         
         # x.range = 600 --> screen x range
         # y.range = 400 --> screen y range
         # randomly spawning objects on sides of screen
 
         # right side
-        if(direction == 0):
-            topOrBottom = True
-            position = [600, Math.random(0,400)]
+        if(self.direction == 0):
+            self.topOrBottom = True
+            self.position = [600, random.randint(0,400))]
         # top side
-        elif(direction == 1):
-            rightOrLeft = True
-            position = [Math.random(0,600),0]
+        elif(self.direction == 1):
+            self.rightOrLeft = True
+            self.position = [random.randint(0,600),0]
         # left side
-        elif(direction == 2):
-            topOrBottom = True
-            position = [0, Math.random(0,400)]
+        elif(self.direction == 2):
+            self.topOrBottom = True
+            self.position = [0, random.randint(0,400)]
         # bottom side
         elif(direction == 3):
-            rightOrLeft = True
-            position = [Math.random(0,600),400]
+            self.rightOrLeft = True
+            self.position = [random.randint(0,600),400]
 
         # angle of movement based on position relative to center of side
-        angleOfTrajectory = Math.random(Math.PI/4, Math.PI/2)
+        self.angleOfTrajectory = random.randint(math.pi/4, math.pi/2)
 
         # COORDINATES START AT TOP LEFT CORNER
         
         # negative if above midpoint
         # positive if below midpoint
-        if(topOrBottom == True):
-            if(position[0] < 600/2):
-                speedDirection = -1
+        if(self.topOrBottom == True):
+            if(self.position[0] < 600/2):
+                self.speedDirection = -1
             else:
-                speedDirection = 1
+                self.speedDirection = 1
 
         # negative if below midpoint
         # positive if above midpoint
-        if(rightOrLeft == True):
-            if(position[0] < 400/2):
-                speedDirection = 1
+        if(self.rightOrLeft == True):
+            if(self.position[0] < 400/2):
+                self.speedDirection = 1
             else:
-                speedDirection = -1
+                self.speedDirection = -1
                 
             else:
-                angleOfTrajectory = Math.random(Math.PI/2, Math.PI/2)
-                trajectory = [Math.cos(angleOfTrajectory), Math.sin(angleOfTrajectory)]
+                self.angleOfTrajectory = random.randint(math.pi/4, math.pi/2)
+                self.trajectory = [self.speedDirection*math.cos(self.angleOfTrajectory),
+                                   self.speedDirection*math.sin(self.angleOfTrajectory)]
             
-
 
     def move():
         # updates position with trajectory speed
-        position[0]=position[0]+trajectory[0]
-        position[1]=position[1]+trajectory[0]
+        self.position[0]=self.position[0]+self.trajectory[0]
+        self.position[1]=self.position[1]+self.trajectory[0]
         
         
 
-    def detect():
+    def detect(player):
      
-        if(((self.x - Player.x)**2 + (self.y - Player.y)**2)**(1/2) <= radius):
+        if(((self.x - [player.x)**2 + (self.y - player.y)**2)**(1/2) <= radius):
             damage()
 
         if((self.x < 0 or self.x > 600) or (self.y < 0 or self.y < 400)):
-            # this.destroy()
+            lives = 0
+            die()
             
-
 
     def damage():
         if(lives > 0):
