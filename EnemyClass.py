@@ -4,11 +4,9 @@ import math
 class EnemyClass:
     
     speed = 0
-    speedDirection = 0 # -1 is negative, 1 is positive
-    trajectory = [] #[0,1]
-    angleOfTrajectory = 0 # range PI/4 and PI/2
-    position = [] #[0,1]
     radius = 0
+    trajectory = [] #[0,1]
+    position = [] #[0,1]
     corners = [] #[0,1,2,3]
 
     # boolean for spawn location
@@ -25,16 +23,18 @@ class EnemyClass:
 
         # 0 is right side, 1 is top side, 2 is left side, 3 is bottom side    
         randomSide = random.randint(0,3)
+        # angle of movement based on position relative to center of side
+        angleOfTrajectory = random.randint(math.pi/4,b)
         
         # x.range = 600 --> screen x range
         # y.range = 400 --> screen y range
         # randomly spawning objects on sides of screen
-        
-        # angle of movement based on position relative to center of side
-        # self.angleOfTrajectory = random.randint(a,b)
+
 
         # corner = [0,1,2,3]
-        # 0 = top right corner, 1 = top left corner, 2 = bottom left corner, 3 = bottom right corner
+        # 0 = top right corner, 1 = top left corner, 2 = bottom left corner, 3 = bottom right corner   
+        # COORDINATES START AT TOP LEFT CORNER
+        
         
         # right side
         if(self.direction == 0):
@@ -73,41 +73,31 @@ class EnemyClass:
                 corner=[False,False,False,True] # bottom right corner
                 
 
-        
-
-        # COORDINATES START AT TOP LEFT CORNER
-        
-        # negative if above midpoint
-        # positive if below midpoint
-        if(self.topOrBottom == True):
-            if(self.position[0] < 600/2):
-                self.speedDirection = -1
-            else:
-                self.speedDirection = 1
-
-        # negative if below midpoint
-        # positive if above midpoint
-        if(self.rightOrLeft == True):
-            if(self.position[0] < 400/2):
-                self.speedDirection = 1
-            else:
-                self.speedDirection = -1
-                
-            else:
-                self.angleOfTrajectory = random.randint(math.pi/4, math.pi/2)
-                self.trajectory = [self.speedDirection*math.cos(self.angleOfTrajectory),
-                                   self.speedDirection*math.sin(self.angleOfTrajectory)]
+        # 0 = top right corner, 1 = top left corner, 2 = bottom left corner, 3 = bottom right corner   
+        # COORDINATES START AT TOP LEFT CORNER      
+        # determine the direction of the object based on corner location
+        if(corner[0] == True):
+            # negative horizontal, postive vertical
+            self.trajectory = [-math.cos(self.angleOfTrajectory),math.sin(self.angleOfTrajectory)]
+        elif(corner[1] == True):
+            # postive horizontal, postive vertical
+            self.trajectory = [-math.cos(self.angleOfTrajectory),math.sin(self.angleOfTrajectory)]
+        elif(corner[2] == True):
+            # postive horizontal, negative vertical
+            self.trajectory = [-math.cos(self.angleOfTrajectory),-math.sin(self.angleOfTrajectory)]
+        elif(corner[3] == True):
+            # negative horizontal, negative vertical
+            self.trajectory = [-math.cos(self.angleOfTrajectory),-math.sin(self.angleOfTrajectory)]
             
-      
 
-    # run in update
+    # run as update
     def stateDetect():
         # if destroyed == true, increment score, if outOfBounds == true then increase speed
         # if absorbed == true, increase the radius of the boss
         return [destroyed, outOfBounds, absorbed] # [0, 1, 2]
             
 
-     # run in update, after stateDetect
+     # run as update, after stateDetect
      def collision(player, boss):
 
         self.position[0]=self.position[0]+self.trajectory[0]
