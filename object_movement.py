@@ -149,7 +149,7 @@ class EnemyClass:
 
 class PlayerClass:
     pBuffer = 0
-    lives = 100
+    lives = 3
     pColor = (29, 120, 6)
     def damage(self):
         if self.invuln()==False:
@@ -241,7 +241,7 @@ else:
 while True:
     # grab the current frame
     (grabbed, frame) = camera.read()
-
+    frame = cv2.flip(frame, 1)
     if(time.time() - enemySpawnTime > 1):           
         allEnemies.append(EnemyClass(2,30))
         enemySpawnTime = time.time()
