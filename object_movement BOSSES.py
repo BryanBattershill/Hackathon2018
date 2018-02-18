@@ -39,7 +39,9 @@ class BossClass:
     radius = 30
     position = [200, 200]
 
-
+    def __init__(self):
+        self.position = [200, 200]
+        self.speed = 2
     def incSize(self):
         self.radius += 1
 
@@ -108,7 +110,7 @@ while True:
     frame = cv2.flip(frame, 1)
     if(time.time() - enemySpawnTime > 6):
         allEnemies.append(BossClass())
-        allEnemies[-1].speed+=0.25*len(allEnemies)
+        allEnemies[-1].speed+=0.5*len(allEnemies)
         enemySpawnTime = time.time()
            
     for i in range(len(allEnemies)):

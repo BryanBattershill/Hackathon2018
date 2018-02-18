@@ -130,8 +130,10 @@ class EnemyClass:
         pass
     # run as update, after stateDetect
     def collision(self,playerPosition, boss, tempFrame):
+
+ 
         try:
-            if((((self.positionE[0]-playerPosition[0])**2 + (self.positionE[1] - playerPosition[1])**2)**(1/2)) <= 30): # player radius is 30
+            if((((self.positionE[0]-playerPosition[0])**2 + (self.positionE[1] - playerPosition[1])**2)**(1/2)) <= 60): # player radius is 30
                 self.destroyed = True
 
             if(self.positionE[0] < 0 or self.positionE[0] > self.xrange or self.positionE[1] < 0 or self.positionE[1] > self.yrange):
@@ -177,10 +179,10 @@ class BossClass:
 
 
     def incSize(self):
-        self.radius += 1
+        self.radius += 3
 
     def incSpeed(self):
-        self.speed += 1
+        self.speed += 0.5
 
     def move(self, pos, PRadius, playerRef):
         deltx = pos[0] - self.position[0]
@@ -242,12 +244,15 @@ while True:
     # grab the current frame
     (grabbed, frame) = camera.read()
     frame = cv2.flip(frame, 1)
+
     if(time.time() - enemySpawnTime > 1):           
         allEnemies.append(EnemyClass(2,30))
         enemySpawnTime = time.time()
+
+    
            
     for i in range(len(allEnemies)):
-        cv2.circle(frame, (round(allEnemies[i].positionE[0]),  round(allEnemies[i].positionE[1])), 25, (0, 255, 255), -1)
+        cv2.circle(frame, (round(allEnemies[i].positionE[0]+15),  round(allEnemies[i].positionE[1])), 25, (0, 255, 255), -1)
         allEnemies[i].move()
            
         if(allEnemies[i].stateDetect()[0] == True):
@@ -372,7 +377,7 @@ while True:
 ##    cv2.putText(frame, direction, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
 ##        0.65, (0, 0, 255), 3)
     if not (center == (None)):
-        cv2.putText(frame, "Score: {}, Time: {}".format(score, round(time.time()-timer,2)),
+        cv2.putText(frame, "Score: {}, Time: {}, Lives: {}".format(score, round(time.time()-timer,2),player.lives),
             (0, 10), cv2.FONT_HERSHEY_SIMPLEX,
             0.35, (0, 0, 255), 1)
 
