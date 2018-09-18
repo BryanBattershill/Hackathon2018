@@ -4,10 +4,10 @@
 
 # import the necessary packages
 from collections import deque
+import cv2
 import numpy as np
 import argparse
 import imutils
-import cv2
 import math
 import time
 import random
@@ -212,8 +212,8 @@ args = vars(ap.parse_args())
 
 # define the lower and upper boundaries of the "green"
 # ball in the HSV color space
-greenLower = (29, 86, 6)
-greenUpper = (64, 255, 255)
+greenLower = (20, 80, 0)
+greenUpper = (70, 255, 255)
 
 # initialize the list of tracked points, the frame counter,
 # and the coordinate deltas
@@ -251,26 +251,7 @@ while True:
 
     
            
-    for i in range(len(allEnemies)):
-        cv2.circle(frame, (round(allEnemies[i].positionE[0]+15),  round(allEnemies[i].positionE[1])), 25, (0, 255, 255), -1)
-        allEnemies[i].move()
-           
-        if(allEnemies[i].stateDetect()[0] == True):
-           allEnemies.pop(i)
-           score+=1
-           break
-        
-        elif(allEnemies[i].stateDetect()[1] == True):
-           allEnemies.pop(i)
-           boss.incSpeed()
-           break
-           
-        elif(allEnemies[i].stateDetect()[2] == True):
-           allEnemies.pop(i)
-           boss.incSize()
-           break
-           
-        allEnemies[i].collision(center, boss, frame)
+
            
 
 
@@ -316,6 +297,25 @@ while True:
             #	(0, 255, 255), 2)
             cv2.circle(frame, center, 5, (0, 0, 255), -1)
             pts.appendleft(center)
+    for i in range(len(allEnemies)):
+        cv2.circle(frame, (round(allEnemies[i].positionE[0]+15),  round(allEnemies[i].positionE[1])), 25, (0, 255, 255), -1)
+        allEnemies[i].move()
+        
+        if(allEnemies[i].stateDetect()[0] == True):
+            allEnemies.pop(i)
+            score+=1
+            break
+        
+        elif(allEnemies[i].stateDetect()[1] == True):
+            allEnemies.pop(i)
+            boss.incSpeed()
+            break
+            
+        elif(allEnemies[i].stateDetect()[2] == True):
+            allEnemies.pop(i)
+            boss.incSize()
+            break
+        allEnemies[i].collision(center, boss, frame)
     try:
         boss.move([center[0], center[1]], 30, player)
         if (player.invuln()):
